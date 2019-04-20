@@ -1,9 +1,3 @@
-# springboot-chart
-springboot chart for helm
-
-Configurable parameters
-
-```yaml
 
 #**********************************************************#
 #                      == Deployment ==                    #
@@ -152,4 +146,3 @@ service:
       protocol: TCP
       # 如果type为NodePort,则可以设置下面的nodePort端口,否则请不要设置
       # nodePort: 30081
-```

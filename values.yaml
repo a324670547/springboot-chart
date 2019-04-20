@@ -1,14 +1,12 @@
-
 #**********************************************************#
 #                      == Deployment ==                    #
 #**********************************************************#
-
 ######---类型设置 (可选为Deployment、StatefulSet，默认为：Deployment)---######
 kind: Deployment
 
 ######---镜像设置---######
 image:
-  repository: "mydlqclub/springboot-helloworld"
+  repository: "rdc-hub.i139.cn/aspirecloud/springboot-helloworld"
   tag: "0.0.1"
   pullPolicy: "IfNotPresent"
 
@@ -59,10 +57,10 @@ probe:
     successThreshold: 1
     timeoutSeconds: 3
   readinessProbe:
-    initialDelaySeconds: 5
+    initialDelaySeconds: 15
     periodSeconds: 10
     successThreshold: 1
-    timeoutSeconds: 3
+    timeoutSeconds: 5
   terminationGracePeriodSeconds: 10
 
 ######---启动节点设置设置---######
@@ -71,30 +69,33 @@ nodeSelector:
 
 ######---Volume && VolumeMounts设置---######
 mount:
-  volumeMounts: 
-    - name: spring-app-config
-      mountPath: /opt/deployments/config
-      readOnly: true
-  volumes: 
-    - name: spring-app-config
-      configMap:
-        name: config
-        items:
-        - key: application.yml
-          path: application.yml
-    - name: datadir
-      persistentVolumeClaim:
-        claimName: datadir-pvc
-  volumeClaimTemplates: #(部署类型必须是：StatefulSet)
-    - metadata:
-        name: www
-      spec:
-        accessModes: ["ReadWriteOnce"]
-        volumeMode: Filesystem
-        resources:
-          requests:
-            storage: 50Mi
-        storageClassName: local-storage
+  #######---volumeMounts---######  
+  # volumeMounts: 
+  #   - name: spring-app-config
+  #     mountPath: /opt/deployments/config
+  #     readOnly: true
+  #######---volumes---######     
+  # volumes: 
+  #   - name: spring-app-config
+  #     configMap:
+  #       name: config
+  #       items:
+  #       - key: application.yml
+  #         path: application.yml
+  #   - name: datadir
+  #     persistentVolumeClaim:
+  #       claimName: datadir-pvc
+  #######---volumeClaimTemplates---###### 
+  # volumeClaimTemplates: #(部署类型必须是：StatefulSet)
+  #   - metadata:
+  #       name: www
+  #     spec:
+  #       accessModes: ["ReadWriteOnce"]
+  #       volumeMode: Filesystem
+  #       resources:
+  #         requests:
+  #           storage: 50Mi
+  #       storageClassName: local-storage
 
 ######---Affinity设置---######
 affinity: 
@@ -126,7 +127,7 @@ tolerations:
 
 service:
   ######---Service type设置 (可以设置为ClusterIP、NodePort、None)---######
-  type: NodePort
+  type: ClusterIP
    ######---Service Labels设置---######
   labels: 
     # svcEndpoints: actuator

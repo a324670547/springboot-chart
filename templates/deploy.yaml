@@ -1,9 +1,13 @@
-apiVersion: apps/v1
+{{- if eq .Values.kind "StatefulSet" }}
+apiVersion: apps/v1beta1
+{{ else }}
+apiVersion: extensions/v1beta1
+{{- end }}
 kind: {{ .Values.kind | default "Deployment" }}
 metadata:
   name: "{{ .Release.Name }}"
   labels:
-    app: {{ template "name" . }}
+    app: "{{ .Release.Name }}"
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: "{{ .Release.Name }}"
     heritage: "{{ .Release.Service }}"
@@ -63,8 +67,8 @@ spec:
           timeoutSeconds: {{ .Values.probe.livenessProbe.timeoutSeconds }}
         readinessProbe:
           httpGet:
-            path: {{ .Values.probe.probePath }}
-            port: {{ .Values.probe.probePort }}
+            path: {{ .Values.probe.path }}
+            port: {{ .Values.probe.port }}
           initialDelaySeconds: {{ .Values.probe.readinessProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.probe.readinessProbe.periodSeconds }}
           successThreshold: {{ .Values.probe.readinessProbe.successThreshold }}

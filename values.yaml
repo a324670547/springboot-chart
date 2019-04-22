@@ -6,7 +6,7 @@ kind: Deployment
 
 ######---镜像设置---######
 image:
-  repository: "rdc-hub.i139.cn/aspirecloud/springboot-helloworld"
+  repository: "mydlqclub/springboot-helloworld"
   tag: "0.0.1"
   pullPolicy: "IfNotPresent"
 
@@ -55,12 +55,12 @@ probe:
     initialDelaySeconds: 30
     periodSeconds: 10
     successThreshold: 1
-    timeoutSeconds: 3
+    timeoutSeconds: 10
   readinessProbe:
     initialDelaySeconds: 15
     periodSeconds: 10
     successThreshold: 1
-    timeoutSeconds: 5
+    timeoutSeconds: 10
   terminationGracePeriodSeconds: 10
 
 ######---启动节点设置设置---######

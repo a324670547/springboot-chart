@@ -1,9 +1,11 @@
 # springboot-chart
+
 springboot chart for helm
 
 Configurable parameters
 
 ```yaml
+#可配置参数
 
 #**********************************************************#
 #                      == Deployment ==                    #
@@ -32,8 +34,6 @@ resources:
 
 ######---Pod podAnnotations设置---######
 podAnnotations:
-#  prometheus.io/scrape: "true"
-#  prometheus.io/port: "9030"
 #  prometheus.io/path: "/"
 
 ######---terminationGracePeriodSeconds优雅关闭Pod设置(默认30s)---######
@@ -63,68 +63,28 @@ probe:
     initialDelaySeconds: 30
     periodSeconds: 10
     successThreshold: 1
-    timeoutSeconds: 3
+    timeoutSeconds: 10
   readinessProbe:
-    initialDelaySeconds: 5
+    initialDelaySeconds: 20
     periodSeconds: 10
     successThreshold: 1
-    timeoutSeconds: 3
+    timeoutSeconds: 10
   terminationGracePeriodSeconds: 10
 
 ######---启动节点设置设置---######
-nodeSelector: 
-  # selectNode: master
+nodeSelector: []
 
 ######---Volume && VolumeMounts设置---######
-mount:
-  volumeMounts: 
-    - name: spring-app-config
-      mountPath: /opt/deployments/config
-      readOnly: true
-  volumes: 
-    - name: spring-app-config
-      configMap:
-        name: config
-        items:
-        - key: application.yml
-          path: application.yml
-    - name: datadir
-      persistentVolumeClaim:
-        claimName: datadir-pvc
-  volumeClaimTemplates: #(部署类型必须是：StatefulSet)
-    - metadata:
-        name: www
-      spec:
-        accessModes: ["ReadWriteOnce"]
-        volumeMode: Filesystem
-        resources:
-          requests:
-            storage: 50Mi
-        storageClassName: local-storage
+mount: 
+  # volumeMounts: []
+  # volumes: []
+  # volumeClaimTemplates: [] #(部署类型必须是：StatefulSet)
 
 ######---Affinity设置---######
-affinity: 
-  # nodeAffinity: 
-  #   #节点亲和性
-  #   requiredDuringSchedulingIgnoredDuringExecution:  #硬策略
-  #     nodeSelectorTerms:
-  #     - matchExpressions:
-  #       - key: kubernetes.io/hostname
-  #         operator: NotIn
-  #         values:
-  #         - k8s-node-2-12
-  #   preferredDuringSchedulingIgnoredDuringExecution: #软策略
-  #   - weight: 1   #取值范围1-100
-  #     preference:
-  #       matchExpressions:
-  #       - key: kube
-  #         operator: In
-  #         values:
-  #         - test
+affinity: {}
 
 ######---Tolerations容忍设置---######
-tolerations: 
-  # - operator: "Exists"
+tolerations: []
 
 #**********************************************************#
 #                      == Service ==                       #
@@ -132,7 +92,7 @@ tolerations:
 
 service:
   ######---Service type设置 (可以设置为ClusterIP、NodePort、None)---######
-  type: NodePort
+  type: ClusterIP
    ######---Service Labels设置---######
   labels: 
     # svcEndpoints: actuator

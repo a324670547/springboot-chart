@@ -27,6 +27,8 @@ spec:
 {{ toYaml .Values.podAnnotations | indent 8 }}
 {{- end }}
     spec:
+      updateStrategy:
+        type: {{ .Values.updateStrategy.type }}"
       containers:
 #---------------------- image ---------------------------------------
       - name: "{{ .Release.Name }}"

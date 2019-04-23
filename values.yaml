@@ -13,6 +13,10 @@ image:
 ######---副本数设置---######
 replicas: 1
 
+######---更新策略---####
+updateStrategy:
+  type: RollingUpdate
+
 ######---Resources资源限制设置---######
 resources:
   limits:

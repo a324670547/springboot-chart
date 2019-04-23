@@ -57,12 +57,12 @@ probe:
   path: /actuator/health
   livenessProbe:
     initialDelaySeconds: 30
-    periodSeconds: 10
+    periodSeconds: 20
     successThreshold: 1
     timeoutSeconds: 10
   readinessProbe:
     initialDelaySeconds: 15
-    periodSeconds: 10
+    periodSeconds: 20
     successThreshold: 1
     timeoutSeconds: 10
   terminationGracePeriodSeconds: 10

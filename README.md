@@ -50,6 +50,11 @@ env:
   - name: "APP_OPTS"
     value: "" 
 
+######---环境变量EnvFrom设置---######
+envFrom:
+  #- configMapRef:
+  #    name: env-config
+
 ######---Port端口设置---######
 ports: 
   - name: server
@@ -64,16 +69,17 @@ probe:
   port: 8081
   path: /actuator/health
   livenessProbe:
+    initialDelaySeconds: 40
+    periodSeconds: 10
+    successThreshold: 1
+    failureThreshold: 10
+    timeoutSeconds: 15
+  readinessProbe:
     initialDelaySeconds: 30
     periodSeconds: 10
     successThreshold: 1
-    timeoutSeconds: 10
-  readinessProbe:
-    initialDelaySeconds: 20
-    periodSeconds: 10
-    successThreshold: 1
-    timeoutSeconds: 10
-  terminationGracePeriodSeconds: 10
+    failureThreshold: 10
+    timeoutSeconds: 15
 
 ######---启动节点设置设置---######
 nodeSelector: []

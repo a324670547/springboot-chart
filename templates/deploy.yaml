@@ -35,6 +35,10 @@ spec:
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
 #---------------------- env -----------------------------------------
+{{- if .Values.envFrom }}
+        envFrom: 
+{{ toYaml .Values.envFrom | indent 8 }}
+{{- end }}
         env:
         - name: KUBERNETES_NAMESPACE
           valueFrom:
@@ -66,6 +70,7 @@ spec:
           initialDelaySeconds: {{ .Values.probe.livenessProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.probe.livenessProbe.periodSeconds }}
           successThreshold: {{ .Values.probe.livenessProbe.successThreshold }}
+          failureThreshold: {{ .Values.probe.livenessProbe.failureThreshold }}
           timeoutSeconds: {{ .Values.probe.livenessProbe.timeoutSeconds }}
         readinessProbe:
           httpGet:
@@ -74,6 +79,7 @@ spec:
           initialDelaySeconds: {{ .Values.probe.readinessProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.probe.readinessProbe.periodSeconds }}
           successThreshold: {{ .Values.probe.readinessProbe.successThreshold }}
+          failureThreshold: {{ .Values.probe.livenessProbe.failureThreshold }}
           timeoutSeconds: {{ .Values.probe.readinessProbe.timeoutSeconds }}
 {{- end }}
 #------- volumes && volumeMounts && volumeClaimTemplates-------------
